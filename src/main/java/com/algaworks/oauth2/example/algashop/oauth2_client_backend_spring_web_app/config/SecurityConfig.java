@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 public class SecurityConfig {
@@ -23,7 +24,7 @@ public class SecurityConfig {
                                             LogoutSuccessHandler oidcLogoutSuccessHandler) {
         http
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/error", "/oauth2/**", "/login/**").permitAll()
+                .requestMatchers("/", "/error", "/oauth2/**", "/login/**", "/test-client-credentials").permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2Login(Customizer.withDefaults())
@@ -65,6 +66,11 @@ public class SecurityConfig {
         //Alternative: "{baseUrl}?logout-success"
         logoutSuccessHandler.setPostLogoutRedirectUri(postLogoutRedirectUri);
         return logoutSuccessHandler;
+    }
+
+    @Bean
+    RestClient.Builder restClientBuilder() {
+        return RestClient.builder();
     }
 }
 

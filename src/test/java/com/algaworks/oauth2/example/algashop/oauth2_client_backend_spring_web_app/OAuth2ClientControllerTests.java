@@ -1,6 +1,7 @@
 package com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app;
 
 import com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app.web.OAuth2ClientController;
+import com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app.web.ProductsClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
@@ -16,13 +17,16 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class OAuth2ClientControllerTests {
 
     @Test
     void shouldRenderHomeView() {
-        OAuth2ClientController controller = new OAuth2ClientController();
+        OAuth2ClientController controller = new OAuth2ClientController(mock(ProductsClientService.class));
         Model model = new ConcurrentModel();
 
         String viewName = controller.home(
@@ -37,7 +41,7 @@ class OAuth2ClientControllerTests {
 
     @Test
     void shouldRenderProtectedViewWithModelData() {
-        OAuth2ClientController controller = new OAuth2ClientController();
+        OAuth2ClientController controller = new OAuth2ClientController(mock(ProductsClientService.class));
         Model model = new ConcurrentModel();
         DefaultOidcUser oidcUser = new DefaultOidcUser(
             List.of(),
@@ -45,9 +49,9 @@ class OAuth2ClientControllerTests {
                 "dummy-id-token",
                 Instant.now(),
                 Instant.now().plusSeconds(300),
-                Map.of(IdTokenClaimNames.SUB, "maria","fullname", "Maria")
+                Map.of(IdTokenClaimNames.SUB, "maria", "name", "Maria")
             ),
-            new OidcUserInfo(Map.of(IdTokenClaimNames.SUB, "maria", "fullname", "Maria"))
+            new OidcUserInfo(Map.of(IdTokenClaimNames.SUB, "maria", "name", "Maria"))
         );
 
         String viewName = controller.protectedPage(
@@ -60,6 +64,51 @@ class OAuth2ClientControllerTests {
         assertEquals("Maria", model.getAttribute("username"));
         assertEquals("dummy-id-token", model.getAttribute("idToken"));
         assertEquals("dummy-token", model.getAttribute("accessToken"));
-        assertTrue(((Set<?>) model.getAttribute("scopes")).contains("orders:read"));
+        Set<?> scopes = (Set<?>) model.getAttribute("scopes");
+        assertNotNull(scopes);
+        assertTrue(scopes.contains("orders:read"));
+    }
+
+    @Test
+    void shouldRenderClientCredentialsViewWithSuccessData() {
+        ProductsClientService m2mService = mock(ProductsClientService.class);
+        OAuth2ClientController controller = new OAuth2ClientController(m2mService);
+        Model model = new ConcurrentModel();
+
+        when(m2mService.fetchProductsUsingClientCredentials()).thenReturn(
+            new ProductsClientService.Response(
+                "m2m-token",
+                Set.of("products:read"),
+                "[{\"id\":1,\"name\":\"Mouse\"}]",
+                null
+            )
+        );
+
+        String viewName = controller.testClientCredentials(model);
+
+        assertEquals("test-client-credentials", viewName);
+        assertEquals(false, model.getAttribute("hasError"));
+        assertEquals("m2m-token", model.getAttribute("accessToken"));
+        Set<?> scopes = (Set<?>) model.getAttribute("scopes");
+        assertNotNull(scopes);
+        assertTrue(scopes.contains("products:read"));
+        assertEquals("[{\"id\":1,\"name\":\"Mouse\"}]", model.getAttribute("productsResponse"));
+    }
+
+    @Test
+    void shouldRenderClientCredentialsViewWithErrorData() {
+        ProductsClientService m2mService = mock(ProductsClientService.class);
+        OAuth2ClientController controller = new OAuth2ClientController(m2mService);
+        Model model = new ConcurrentModel();
+
+        when(m2mService.fetchProductsUsingClientCredentials()).thenReturn(
+            new ProductsClientService.Response(null, Set.of(), null, "falha na chamada")
+        );
+
+        String viewName = controller.testClientCredentials(model);
+
+        assertEquals("test-client-credentials", viewName);
+        assertEquals(true, model.getAttribute("hasError"));
+        assertEquals("falha na chamada", model.getAttribute("errorMessage"));
     }
 }

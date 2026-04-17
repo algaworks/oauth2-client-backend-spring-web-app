@@ -12,6 +12,7 @@ Spring Boot web app configured as an OAuth2 Client with two registrations:
 - Requested scopes:
   - Web client: all scopes registered for this client
   - M2M client: all scopes registered for this client
+- Products API base URL for M2M calls: `http://localhost:8083`
 
 The properties are in `src/main/resources/application.yaml`.
 
@@ -21,6 +22,7 @@ The properties are in `src/main/resources/application.yaml`.
 
 - `GET /` -> public Thymeleaf homepage
 - `GET /protected-resource` -> protected page that requires OAuth2 login
+- `GET /test-client-credentials` -> public page that fetches an M2M token and calls `GET /api/v1/products`
 - `GET /oauth2/authorization/algashop-ecommerce-web` -> starts the web OAuth2 login flow
 - `POST /logout` -> starts OIDC logout with post-logout redirect
 

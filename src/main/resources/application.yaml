@@ -50,6 +50,8 @@ logging:
     org.springframework.security: TRACE
 
 app:
+  products-api:
+    base-url: http://localhost:8083
   security:
     post-logout-redirect-uri: http://algashop-ecommerce:9080?logout-success
 
