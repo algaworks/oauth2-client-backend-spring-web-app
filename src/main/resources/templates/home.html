@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Public Home</title>
+</head>
+<body>
+<h1>Public Home</h1>
+<p>This page is public.</p>
+
+<p>
+    Authentication status:
+    <strong th:if="${authenticated}">authenticated</strong>
+    <strong th:unless="${authenticated}">not authenticated</strong>
+    <span th:if="${authenticated}">as <strong th:text="${username}">user</strong></span>
+</p>
+
+<p>
+    <a href="/protected-resource">Go to protected resource</a>
+</p>
+
+<p>
+    <a href="/login">Login</a>
+</p>
+</body>
+</html>
+
