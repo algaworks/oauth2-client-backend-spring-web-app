@@ -1,4 +1,4 @@
-package com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app;
+package com.algaworks.oauth2.example.algashop;
 
 import java.time.Instant;
 import java.util.Set;

@@ -1,7 +1,7 @@
-package com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app;
+package com.algaworks.oauth2.example.algashop;
 
-import com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app.web.OAuth2ClientController;
-import com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app.web.ProductsClientService;
+import com.algaworks.oauth2.example.algashop.web.OAuth2ClientController;
+import com.algaworks.oauth2.example.algashop.web.ProductsClientService;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;

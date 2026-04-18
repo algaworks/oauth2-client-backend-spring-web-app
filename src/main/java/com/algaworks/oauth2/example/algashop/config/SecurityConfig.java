@@ -1,4 +1,4 @@
-package com.algaworks.oauth2.example.algashop.oauth2_client_backend_spring_web_app.config;
+package com.algaworks.oauth2.example.algashop.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
