@@ -16,7 +16,7 @@ Spring Boot web app configured as an OAuth2 Client with two registrations:
 
 The properties are in `src/main/resources/application.yaml`.
 
-`post_logout_redirect_uri` configurado: `http://algashop-ecommerce:9080?logout-success`
+`post_logout_redirect_uri` configured: `http://algashop-ecommerce:9080?logout-success`
 
 ## Endpoints
 
