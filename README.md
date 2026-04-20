@@ -24,19 +24,6 @@ The properties are in `src/main/resources/application.yaml`.
 - `GET /protected-resource` -> protected page that requires OAuth2 login
 - `GET /test-client-credentials` -> public page that fetches an M2M token and calls `GET /api/v1/products`
 - `GET /oauth2/authorization/algashop-ecommerce-web` -> starts the web OAuth2 login flow
+- `GET /login` -> Login page with a link to start the web OAuth2 login flow
 - `POST /logout` -> starts OIDC logout with post-logout redirect
-
-## Run locally
-
-```program
-cd C:\git\algaworks\ems\demo\oauth2-client-backend-spring-web-app
-.\gradlew.bat bootRun
-```
-
-## Testes
-
-```program
-cd C:\git\algaworks\ems\demo\oauth2-client-backend-spring-web-app
-.\gradlew.bat test
-```
 
