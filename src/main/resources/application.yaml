@@ -9,12 +9,12 @@ spring:
       client:
         provider:
           algashop-auth-server:
-            issuer-uri: http://algashop-authorization-server:8081
+            issuer-uri: http://auth.algashop.local:8081
             user-name-attribute: sub
-#            authorization-uri: http://algashop-authorization-server:8081/oauth2/authorize
-#            token-uri: http://algashop-authorization-server:8081/oauth2/token
-#            jwk-set-uri: http://algashop-authorization-server:8081/oauth2/jwks
-#            end_session_endpoint: http://algashop-authorization-server:8081/connect/logout
+#            authorization-uri: http://auth.algashop.local:8081/oauth2/authorize
+#            token-uri: http://auth.algashop.local:8081/oauth2/token
+#            jwk-set-uri: http://auth.algashop.local:8081/oauth2/jwks
+#            end_session_endpoint: http://auth.algashop.local:8081/connect/logout
         registration:
           algashop-ecommerce-web:
             provider: algashop-auth-server
@@ -53,5 +53,5 @@ app:
   products-api:
     base-url: http://localhost:8083
   security:
-    post-logout-redirect-uri: http://algashop-ecommerce:9080?logout-success
+    post-logout-redirect-uri: http://algashop.local:9080?logout-success
 
